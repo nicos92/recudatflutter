@@ -16,9 +16,10 @@ class TablasDatListPage extends StatefulWidget {
 class _TablasDatListPageState extends State<TablasDatListPage> {
   final TablasDatService _tablasDatService = TablasDatService();
   final SectorService _sectorService = SectorService();
-  
+
   List<TablasDat> _tablasDat = [];
   List<Sector> _sectores = [];
+  TablasDat? _selectedForDeletion; // Track selected row for deletion
   bool _isLoading = true;
 
   @override
@@ -139,43 +140,52 @@ class _TablasDatListPageState extends State<TablasDatListPage> {
                         : DatTable(
                             data: _tablasDat,
                             sectores: _sectores,
+                            selectedRow: _selectedForDeletion, // Highlight the selected row for deletion
                             onRowSelected: (tablasDat) {
-                              // Solo maneja la selección visual
-                            },
-                            onRowTapped: (tablasDat) async {
-                              bool? result = await Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                    TablasDatFormPage(tablasDat: tablasDat),
-                                ),
-                              );
-
-                              if (result == true) {
-                                await _loadData();
-                              }
+                              // Handle row selection for deletion
+                              setState(() {
+                                _selectedForDeletion = tablasDat;
+                              });
                             },
                           ),
                   ),
                   
                   const SizedBox(height: 16),
                   
-                  // Botón para eliminar seleccionado
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: ElevatedButton.icon(
-                      onPressed: () {
-                        // Implementar lógica para eliminar el registro seleccionado
-                        // Por ahora, solo mostrar un mensaje
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Seleccione una fila para eliminar'),
-                          ),
-                        );
-                      },
-                      icon: const Icon(Icons.delete),
-                      label: const Text('Eliminar Seleccionado'),
-                    ),
+                  // Botones para editar y eliminar seleccionado
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      ElevatedButton.icon(
+                        onPressed: _selectedForDeletion != null
+                            ? () async {
+                                bool? result = await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                      TablasDatFormPage(tablasDat: _selectedForDeletion),
+                                  ),
+                                );
+
+                                if (result == true) {
+                                  await _loadData();
+                                }
+                              }
+                            : null,
+                        icon: const Icon(Icons.edit),
+                        label: const Text('Editar Seleccionado'),
+                      ),
+                      const SizedBox(width: 12),
+                      ElevatedButton.icon(
+                        onPressed: _selectedForDeletion != null
+                            ? () {
+                                _confirmDelete(_selectedForDeletion!.id!, _selectedForDeletion!.nombre);
+                              }
+                            : null,
+                        icon: const Icon(Icons.delete),
+                        label: const Text('Eliminar Seleccionado'),
+                      ),
+                    ],
                   ),
                 ],
               ),
