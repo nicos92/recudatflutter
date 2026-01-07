@@ -1,10 +1,11 @@
 import 'dart:async';
-import 'dart:io' show Platform;
+import 'dart:io' show Platform, Directory;
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 // Importar sqflite_ffi para Windows
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../models/sector.dart';
 import '../models/tablas_dat.dart';
@@ -28,7 +29,31 @@ class DatabaseHelper {
       databaseFactory = databaseFactoryFfi;
     }
 
-    String path = join(await getDatabasesPath(), 'tablas_dat.db');
+    // Obtener el directorio de documentos del usuario
+    Directory appDir;
+    if (Platform.isWindows) {
+      // En Windows, usar AppData Local
+      String appDataPath = Platform.environment['LOCALAPPDATA'] ?? '';
+      if (appDataPath.isEmpty) {
+        // Si no se encuentra LOCALAPPDATA, usar el directorio temporal
+        appDir = await getTemporaryDirectory();
+      } else {
+        appDir = Directory('$appDataPath/flutter_idea_uno');
+        if (!await appDir.exists()) {
+          await appDir.create(recursive: true);
+        }
+        // Crear subdirectorio para la base de datos
+        appDir = Directory('${appDir.path}/database');
+        if (!await appDir.exists()) {
+          await appDir.create(recursive: true);
+        }
+      }
+    } else {
+      // Para otras plataformas, usar el directorio de documentos
+      appDir = await getApplicationDocumentsDirectory();
+    }
+
+    String path = join(appDir.path, 'tablas_dat.db');
     return await openDatabase(
       path,
       version: 1,

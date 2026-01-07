@@ -39,6 +39,7 @@ dependencies:
   sqflite: ^2.3.0
   sqflite_common_ffi: ^2.3.0+3
   path: ^1.8.3
+  path_provider: ^2.1.1
 
   # Dependencia para ejecutar comandos del sistema
   process_run: ^0.13.0
