@@ -174,6 +174,10 @@ class _TablasDatListPageState extends State<TablasDatListPage> {
                             : null,
                         icon: const Icon(Icons.edit),
                         label: const Text('Editar Seleccionado'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.yellow.shade600, // Yellow color
+                          foregroundColor: Colors.black, // Text/icon color
+                        ),
                       ),
                       const SizedBox(width: 12),
                       ElevatedButton.icon(
@@ -184,6 +188,10 @@ class _TablasDatListPageState extends State<TablasDatListPage> {
                             : null,
                         icon: const Icon(Icons.delete),
                         label: const Text('Eliminar Seleccionado'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.redAccent.shade400, // Yellow color
+                          foregroundColor: Colors.black, // Text/icon color
+                        ),
                       ),
                     ],
                   ),

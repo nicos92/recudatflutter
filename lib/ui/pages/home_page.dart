@@ -160,7 +160,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Gestión de Archivos DAT'),
+        title: const Text('Seleccioná y ejecutá'),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
       body: Padding(
@@ -278,7 +278,11 @@ class _HomePageState extends State<HomePage> {
                         }
                       : null,
                   icon: const Icon(Icons.play_arrow),
-                  label: const Text('Ejecutar Comando'),
+                  label: const Text('Ejecutar Recover1 zz'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.yellow.shade600, // Yellow color
+                    foregroundColor: Colors.black, // Text/icon color
+                  ),
                 ),
                 const SizedBox(width: 12),
                 ElevatedButton.icon(
@@ -288,7 +292,11 @@ class _HomePageState extends State<HomePage> {
                         }
                       : null,
                   icon: const Icon(Icons.copy),
-                  label: const Text('Copiar con Fecha'),
+                  label: const Text('Copiar Archivo'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green.shade600, // Yellow color
+                    foregroundColor: Colors.black, // Text/icon color
+                  ),
                 ),
               ],
             ),

@@ -83,142 +83,144 @@ class _ConfigPageState extends State<ConfigPage> {
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
-          : Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Configuración de la Aplicación',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 24),
-                  
-                  // Configuración de ruta
-                  Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Ruta de Ejecución',
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(height: 16),
-                          TextField(
-                            controller: _pathController,
-                            decoration: const InputDecoration(
-                              labelText: 'Ruta base para comandos',
-                              border: OutlineInputBorder(),
-                              hintText: r'C:\ruta\de\ejecucion',
+          : SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Configuración de la Aplicación',
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 24),
+
+                    // Configuración de ruta
+                    Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Ruta de Ejecución',
+                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                             ),
-                            keyboardType: TextInputType.url,
-                          ),
-                          const SizedBox(height: 8),
-                          const Text(
-                            'Esta ruta se usará para ejecutar el comando recover1 con los archivos DAT.',
-                            style: TextStyle(fontSize: 12, color: Colors.grey),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  
-                  const SizedBox(height: 16),
-                  
-                  // Configuración de tema
-                  Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Tema de la Aplicación',
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(height: 16),
-                          DropdownButtonFormField<int>(
-                            value: _selectedThemeMode,
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
+                            const SizedBox(height: 16),
+                            TextField(
+                              controller: _pathController,
+                              decoration: const InputDecoration(
+                                labelText: 'Ruta base para comandos',
+                                border: OutlineInputBorder(),
+                                hintText: r'C:\ruta\de\ejecucion',
+                              ),
+                              keyboardType: TextInputType.url,
                             ),
-                            items: const [
-                              DropdownMenuItem(
-                                value: 0,
-                                child: Text('Tema Claro'),
-                              ),
-                              DropdownMenuItem(
-                                value: 1,
-                                child: Text('Tema Oscuro'),
-                              ),
-                              DropdownMenuItem(
-                                value: 2,
-                                child: Text('Sistema'),
-                              ),
-                            ],
-                            onChanged: (value) {
-                              setState(() {
-                                _selectedThemeMode = value ?? 0;
-                              });
-                            },
-                            hint: const Text('Seleccionar tema'),
-                          ),
-                          const SizedBox(height: 8),
-                          const Text(
-                            'Selecciona cómo deseas que se vea la aplicación.',
-                            style: TextStyle(fontSize: 12, color: Colors.grey),
-                          ),
-                        ],
+                            const SizedBox(height: 8),
+                            const Text(
+                              'Esta ruta se usará para ejecutar el comando recover1 con los archivos DAT.',
+                              style: TextStyle(fontSize: 12, color: Colors.grey),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  
-                  const SizedBox(height: 16),
-                  
-                  // Configuración de notificaciones
-                  Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Notificaciones',
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(height: 16),
-                          SwitchListTile(
-                            title: const Text('Habilitar notificaciones'),
-                            value: _notificationsEnabled,
-                            onChanged: (value) {
-                              setState(() {
-                                _notificationsEnabled = value;
-                              });
-                            },
-                          ),
-                          const Text(
-                            'Activa o desactiva las notificaciones de la aplicación.',
-                            style: TextStyle(fontSize: 12, color: Colors.grey),
-                          ),
-                        ],
+
+                    const SizedBox(height: 16),
+
+                    // Configuración de tema
+                    Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Tema de la Aplicación',
+                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(height: 16),
+                            DropdownButtonFormField<int>(
+                              value: _selectedThemeMode,
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                              ),
+                              items: const [
+                                DropdownMenuItem(
+                                  value: 0,
+                                  child: Text('Tema Claro'),
+                                ),
+                                DropdownMenuItem(
+                                  value: 1,
+                                  child: Text('Tema Oscuro'),
+                                ),
+                                DropdownMenuItem(
+                                  value: 2,
+                                  child: Text('Sistema'),
+                                ),
+                              ],
+                              onChanged: (value) {
+                                setState(() {
+                                  _selectedThemeMode = value ?? 0;
+                                });
+                              },
+                              hint: const Text('Seleccionar tema'),
+                            ),
+                            const SizedBox(height: 8),
+                            const Text(
+                              'Selecciona cómo deseas que se vea la aplicación.',
+                              style: TextStyle(fontSize: 12, color: Colors.grey),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  
-                  const SizedBox(height: 24),
-                  
-                  // Botón de guardar
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: ElevatedButton.icon(
-                      onPressed: _saveConfig,
-                      icon: const Icon(Icons.save),
-                      label: const Text('Guardar Configuración'),
+
+                    const SizedBox(height: 16),
+
+                    // Configuración de notificaciones
+                    Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Notificaciones',
+                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(height: 16),
+                            SwitchListTile(
+                              title: const Text('Habilitar notificaciones'),
+                              value: _notificationsEnabled,
+                              onChanged: (value) {
+                                setState(() {
+                                  _notificationsEnabled = value;
+                                });
+                              },
+                            ),
+                            const Text(
+                              'Activa o desactiva las notificaciones de la aplicación.',
+                              style: TextStyle(fontSize: 12, color: Colors.grey),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
-                ],
+
+                    const SizedBox(height: 24),
+
+                    // Botón de guardar
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: ElevatedButton.icon(
+                        onPressed: _saveConfig,
+                        icon: const Icon(Icons.save),
+                        label: const Text('Guardar Configuración'),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
     );
