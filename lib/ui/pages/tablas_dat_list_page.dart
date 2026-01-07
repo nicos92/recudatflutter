@@ -139,18 +139,8 @@ class _TablasDatListPageState extends State<TablasDatListPage> {
                         : DatTable(
                             data: _tablasDat,
                             sectores: _sectores,
-                            onRowSelected: (tablasDat) async {
-                              bool? result = await Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                    TablasDatFormPage(tablasDat: tablasDat),
-                                ),
-                              );
-
-                              if (result == true) {
-                                await _loadData();
-                              }
+                            onRowSelected: (tablasDat) {
+                              // Solo maneja la selección visual
                             },
                             onRowTapped: (tablasDat) async {
                               bool? result = await Navigator.push(

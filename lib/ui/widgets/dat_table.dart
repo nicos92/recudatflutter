@@ -87,18 +87,17 @@ class _DatTableState extends State<DatTable> {
                   : MaterialStateProperty.all(Colors.transparent),
               selected: isSelected,
               onSelectChanged: (selected) {
-                if (selected != null && selected) {
-                  // Maneja tanto selección como clic
-                  widget.onRowSelected?.call(tablasDat);
+                // Maneja la selección visual
+                widget.onRowSelected?.call(tablasDat);
+
+                // Si la fila fue seleccionada (no deseleccionada), ejecuta la acción de toque
+                if (selected == true) {
                   widget.onRowTapped?.call(tablasDat);
                 }
               },
               cells: [
                 DataCell(
                   Text(tablasDat.nombre),
-                  onTap: widget.onRowTapped != null
-                      ? () => widget.onRowTapped!(tablasDat)
-                      : null,
                 ),
                 DataCell(Text(tablasDat.archivo)),
                 DataCell(Text(tablasDat.error)),
