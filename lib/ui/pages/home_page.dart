@@ -98,7 +98,8 @@ class _HomePageState extends State<HomePage> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Error al ejecutar el comando: ${result.error}'),
-            backgroundColor: Colors.red,
+            backgroundColor: Colors.red.shade300,
+
           ),
         );
       }
@@ -106,7 +107,7 @@ class _HomePageState extends State<HomePage> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Error inesperado: $e'),
-          backgroundColor: Colors.red,
+          backgroundColor: Colors.red.shade300,
         ),
       );
     } finally {
