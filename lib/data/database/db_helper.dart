@@ -1,6 +1,10 @@
 import 'dart:async';
+import 'dart:io' show Platform;
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+
+// Importar sqflite_ffi para Windows
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 import '../models/sector.dart';
 import '../models/tablas_dat.dart';
@@ -19,6 +23,11 @@ class DatabaseHelper {
   }
 
   Future<Database> _initDatabase() async {
+    // Inicializar sqflite_ffi para Windows
+    if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
+      databaseFactory = databaseFactoryFfi;
+    }
+
     String path = join(await getDatabasesPath(), 'tablas_dat.db');
     return await openDatabase(
       path,
@@ -137,15 +146,15 @@ class DatabaseHelper {
 
   Future<List<TablasDat>> getTablasDat({int? idSector, String? keyword}) async {
     final db = await database;
-    
+
     String whereClause = '';
     List<dynamic> whereArgs = [];
-    
+
     if (idSector != null && idSector > 0) {
       whereClause += 'id_sector = ?';
       whereArgs.add(idSector);
     }
-    
+
     if (keyword != null && keyword.isNotEmpty) {
       if (whereClause.isNotEmpty) {
         whereClause += ' AND ';
@@ -153,7 +162,7 @@ class DatabaseHelper {
       whereClause += '(nombre LIKE ? OR archivo LIKE ? OR error LIKE ? OR observacion LIKE ?)';
       whereArgs.addAll(['%$keyword%', '%$keyword%', '%$keyword%', '%$keyword%']);
     }
-    
+
     final List<Map<String, dynamic>> maps = await db.query(
       'tablas_dat',
       where: whereClause.isNotEmpty ? whereClause : null,

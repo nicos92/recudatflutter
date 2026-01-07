@@ -37,6 +37,7 @@ dependencies:
 
   # Dependencias para SQLite
   sqflite: ^2.3.0
+  sqflite_common_ffi: ^2.3.0+3
   path: ^1.8.3
 
   # Dependencia para ejecutar comandos del sistema
