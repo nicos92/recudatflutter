@@ -53,6 +53,63 @@ class CommandService {
       );
     }
   }
+  
+  // Copiar archivo con formato de fecha y hora
+  Future<CommandResult> copyFileWithTimestamp(String fileName) async {
+    try {
+      // Asegurarse de tener la ruta base
+      if (_basePath == null) {
+        await initialize();
+      }
+      
+      // Construir la ruta completa del archivo original
+      String sourcePath = '$_basePath\\$fileName';
+      
+      // Verificar si el archivo existe
+      File sourceFile = File(sourcePath);
+      if (!await sourceFile.exists()) {
+        throw Exception('El archivo no existe: $sourcePath');
+      }
+
+      // Generar timestamp en formato YYYYMMDDHHMMSS
+      DateTime now = DateTime.now();
+      String timestamp = '${now.year}'
+          '${now.month.toString().padLeft(2, '0')}'
+          '${now.day.toString().padLeft(2, '0')}'
+          '${now.hour.toString().padLeft(2, '0')}'
+          '${now.minute.toString().padLeft(2, '0')}'
+          '${now.second.toString().padLeft(2, '0')}';
+      
+      // Obtener la extensión del archivo original
+      String extension = '';
+      int lastDotIndex = fileName.lastIndexOf('.');
+      if (lastDotIndex != -1) {
+        extension = fileName.substring(lastDotIndex);
+      }
+      
+      // Crear el nombre del archivo destino
+      String baseFileName = fileName.substring(0, lastDotIndex != -1 ? lastDotIndex : fileName.length);
+      String destinationFileName = '${baseFileName}_${timestamp}${extension}';
+      String destinationPath = '$_basePath\\$destinationFileName';
+      
+      // Copiar el archivo
+      await sourceFile.copy(destinationPath);
+      
+      return CommandResult(
+        success: true,
+        output: 'Archivo copiado exitosamente a: $destinationFileName',
+        error: '',
+        exitCode: 0,
+      );
+    } catch (e) {
+      return CommandResult(
+        success: false,
+        output: '',
+        error: e.toString(),
+        exitCode: -1,
+      );
+    }
+  }
 }
 
 class CommandResult {

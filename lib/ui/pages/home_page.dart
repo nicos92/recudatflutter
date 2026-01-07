@@ -116,6 +116,46 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  Future<void> _copyFileWithTimestamp() async {
+    if (_selectedTablasDat == null) return;
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      // Copiar el archivo con timestamp
+      final result = await _commandService.copyFileWithTimestamp(_selectedTablasDat!.archivo);
+
+      if (result.success) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(result.output),
+            backgroundColor: Colors.green,
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error al copiar el archivo: ${result.error}'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error inesperado al copiar archivo: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -213,13 +253,13 @@ class _HomePageState extends State<HomePage> {
                       data: _filteredTablasDat,
                       sectores: _sectores,
                       onRowSelected: (tablasDat) {
+                        // Solo maneja la selección visual
+                      },
+                      onRowTapped: (tablasDat) {
+                        // Solo selecciona la fila sin ejecutar comandos
                         setState(() {
                           _selectedTablasDat = tablasDat;
                         });
-                      },
-                      onRowTapped: (tablasDat) async {
-                        // Ejecutar comando al hacer toque
-                        await _executeRecoverCommand();
                       },
                       selectedRow: _selectedTablasDat,
                     ),
@@ -227,18 +267,30 @@ class _HomePageState extends State<HomePage> {
 
             const SizedBox(height: 16),
 
-            // Botón para ejecutar comando
-            Align(
-              alignment: Alignment.centerRight,
-              child: ElevatedButton.icon(
-                onPressed: _selectedTablasDat != null
-                    ? () async {
-                        await _executeRecoverCommand();
-                      }
-                    : null,
-                icon: const Icon(Icons.play_arrow),
-                label: const Text('Ejecutar Comando'),
-              ),
+            // Botones para ejecutar comandos
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                ElevatedButton.icon(
+                  onPressed: _selectedTablasDat != null && !_isLoading
+                      ? () async {
+                          await _executeRecoverCommand();
+                        }
+                      : null,
+                  icon: const Icon(Icons.play_arrow),
+                  label: const Text('Ejecutar Comando'),
+                ),
+                const SizedBox(width: 12),
+                ElevatedButton.icon(
+                  onPressed: _selectedTablasDat != null && !_isLoading
+                      ? () async {
+                          await _copyFileWithTimestamp();
+                        }
+                      : null,
+                  icon: const Icon(Icons.copy),
+                  label: const Text('Copiar con Fecha'),
+                ),
+              ],
             ),
           ],
         ),
