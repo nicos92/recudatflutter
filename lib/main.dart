@@ -68,11 +68,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Gestión de Archivos DAT'),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        systemOverlayStyle: SystemUiOverlayStyle.light,
-      ),
+
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),

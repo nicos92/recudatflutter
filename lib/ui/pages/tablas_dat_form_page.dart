@@ -37,14 +37,29 @@ class _TablasDatFormPageState extends State<TablasDatFormPage> {
   Future<void> _loadData() async {
     try {
       _sectores = await _sectorService.getAllSectores();
-      
+
       if (widget.tablasDat != null) {
         _nombreController.text = widget.tablasDat!.nombre;
         _archivoController.text = widget.tablasDat!.archivo;
         _errorController.text = widget.tablasDat!.error;
         _imgErrorController.text = widget.tablasDat!.imgError;
         _observacionController.text = widget.tablasDat!.observacion;
-        _selectedSectorId = widget.tablasDat!.idSector;
+
+        // Check if the referenced sector exists in the list of available sectors
+        if (_sectores.any((sector) => sector.id == widget.tablasDat!.idSector)) {
+          _selectedSectorId = widget.tablasDat!.idSector;
+        } else {
+          // If the referenced sector doesn't exist, show a warning and set to null
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('El sector referenciado ya no existe. Por favor seleccione uno nuevo.'),
+                backgroundColor: Colors.orange,
+              ),
+            );
+          }
+          _selectedSectorId = null;
+        }
       } else if (_sectores.isNotEmpty) {
         _selectedSectorId = _sectores.first.id;
       }
