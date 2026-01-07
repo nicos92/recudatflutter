@@ -213,6 +213,14 @@ Win32Window::MessageHandler(HWND hwnd,
       }
       return 0;
 
+    case WM_GETMINMAXINFO: {
+      MINMAXINFO* info = reinterpret_cast<MINMAXINFO*>(lparam);
+      // Set minimum window size (width, height)
+      info->ptMinTrackSize.x = 900;  // Minimum width
+      info->ptMinTrackSize.y = 700;  // Minimum height
+      return 0;
+    }
+
     case WM_DWMCOLORIZATIONCOLORCHANGED:
       UpdateTheme(hwnd);
       return 0;
