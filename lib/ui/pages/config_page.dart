@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../data/services/config_service.dart';
+import '../../data/services/theme_service.dart';
 
 class ConfigPage extends StatefulWidget {
   const ConfigPage({Key? key}) : super(key: key);
@@ -27,9 +28,10 @@ class _ConfigPageState extends State<ConfigPage> {
   Future<void> _loadConfig() async {
     try {
       String basePath = await _configService.getBasePath();
+      // Get theme mode from the theme service
       int themeMode = await _configService.getThemeMode();
       bool notificationsEnabled = await _configService.areNotificationsEnabled();
-      
+
       setState(() {
         _pathController.text = basePath;
         _selectedThemeMode = themeMode;
@@ -49,9 +51,10 @@ class _ConfigPageState extends State<ConfigPage> {
   Future<void> _saveConfig() async {
     try {
       await _configService.setBasePath(_pathController.text);
-      await _configService.setThemeMode(_selectedThemeMode);
+      // Use the theme service to update the theme mode
+      await themeService.setThemeMode(_selectedThemeMode);
       await _configService.setNotificationsEnabled(_notificationsEnabled);
-      
+
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Configuración guardada exitosamente'),

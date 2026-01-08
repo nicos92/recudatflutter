@@ -246,31 +246,9 @@ class _HomePageState extends State<HomePage> {
             ),
             const SizedBox(height: 16),
 
-            // Tabla de datos
-            Expanded(
-              child: _isLoading
-                  ? const Center(child: CircularProgressIndicator())
-                  : DatTable(
-                      data: _filteredTablasDat,
-                      sectores: _sectores,
-                      onRowSelected: (tablasDat) {
-                        // Solo maneja la selección visual
-                      },
-                      onRowTapped: (tablasDat) {
-                        // Solo selecciona la fila sin ejecutar comandos
-                        setState(() {
-                          _selectedTablasDat = tablasDat;
-                        });
-                      },
-                      selectedRow: _selectedTablasDat,
-                    ),
-            ),
-
-            const SizedBox(height: 16),
-
             // Botones para ejecutar comandos
             Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton.icon(
                   onPressed: _selectedTablasDat != null && !_isLoading
@@ -281,7 +259,7 @@ class _HomePageState extends State<HomePage> {
                   icon: const Icon(Icons.play_arrow),
                   label: const Text('Ejecutar Recover1 zz'),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.yellow.shade600, // Yellow color
+                    backgroundColor: Colors.yellow.shade400, // Yellow color
                     foregroundColor: Colors.black, // Text/icon color
                   ),
                 ),
@@ -295,11 +273,37 @@ class _HomePageState extends State<HomePage> {
                   icon: const Icon(Icons.copy),
                   label: const Text('Copiar Archivo'),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green.shade600, // Yellow color
+                    backgroundColor: Colors.green.shade400, // Yellow color
                     foregroundColor: Colors.black, // Text/icon color
                   ),
                 ),
               ],
+            ),
+            const SizedBox(height: 16),
+
+            // Tabla de datos
+            Expanded(
+              child: _isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : Center(
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: DatTable(
+                          data: _filteredTablasDat,
+                          sectores: _sectores,
+                          onRowSelected: (tablasDat) {
+                            // Solo maneja la selección visual
+                          },
+                          onRowTapped: (tablasDat) {
+                            // Solo selecciona la fila sin ejecutar comandos
+                            setState(() {
+                              _selectedTablasDat = tablasDat;
+                            });
+                          },
+                          selectedRow: _selectedTablasDat,
+                        ),
+                      ),
+                    ),
             ),
           ],
         ),

@@ -23,6 +23,20 @@ class DatTable extends StatefulWidget {
 }
 
 class _DatTableState extends State<DatTable> {
+  late ScrollController _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -32,80 +46,87 @@ class _DatTableState extends State<DatTable> {
             primary: Theme.of(context).colorScheme.primary,
           ),
         ),
-        child: DataTable(
-          columnSpacing: 16,
-          horizontalMargin: 12,
-          headingRowHeight: 48,
-          dataRowHeight: 40,
-          headingRowColor: MaterialStateProperty.all<Color>(
-            Theme.of(context).colorScheme.primaryContainer,
-          ),
-          columns: const [
-            DataColumn(
-              label: Text(
-                'Nombre',
-                style: TextStyle(fontWeight: FontWeight.bold),
+        child: Scrollbar(  // Add scrollbar for better UX
+          controller: _scrollController,  // Connect the scrollbar to the scroll controller
+          child: SingleChildScrollView(  // Make the table scrollable
+            controller: _scrollController,  // Connect the scroll view to the scroll controller
+            scrollDirection: Axis.vertical,  // Allow vertical scrolling
+            child: DataTable(
+              columnSpacing: 16,
+              horizontalMargin: 12,
+              headingRowHeight: 48,
+              dataRowHeight: 40,
+              headingRowColor: MaterialStateProperty.all<Color>(
+                Theme.of(context).colorScheme.primaryContainer,
               ),
-            ),
-            DataColumn(
-              label: Text(
-                'Archivo',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ),
-            DataColumn(
-              label: Text(
-                'Error',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ),
-            DataColumn(
-              label: Text(
-                'Observación',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ),
-            DataColumn(
-              label: Text(
-                'Sector',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ),
-          ],
-          rows: widget.data.map((tablasDat) {
-            final sector = widget.sectores.firstWhere(
-              (s) => s.id == tablasDat.idSector,
-              orElse: () => Sector(id: 0, sector: 'N/A'),
-            );
-
-            bool isSelected = widget.selectedRow?.id == tablasDat.id;
-
-            return DataRow(
-              color: isSelected
-                  ? MaterialStateProperty.all(
-                  Theme.of(context).colorScheme.primary.withOpacity(0.2))
-                  : MaterialStateProperty.all(Colors.transparent),
-              selected: isSelected,
-              onSelectChanged: (selected) {
-                // Maneja la selección visual
-                widget.onRowSelected?.call(tablasDat);
-
-                // Si la fila fue seleccionada (no deseleccionada), ejecuta la acción de toque
-                if (selected == true) {
-                  widget.onRowTapped?.call(tablasDat);
-                }
-              },
-              cells: [
-                DataCell(
-                  Text(tablasDat.nombre),
+              columns: const [
+                DataColumn(
+                  label: Text(
+                    'Nombre',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                 ),
-                DataCell(Text(tablasDat.archivo)),
-                DataCell(Text(tablasDat.error)),
-                DataCell(Text(tablasDat.observacion)),
-                DataCell(Text(sector.sector)),
+                DataColumn(
+                  label: Text(
+                    'Archivo',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+                DataColumn(
+                  label: Text(
+                    'Error',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+                DataColumn(
+                  label: Text(
+                    'Observación',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+                DataColumn(
+                  label: Text(
+                    'Sector',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
               ],
-            );
-          }).toList(),
+              rows: widget.data.map((tablasDat) {
+                final sector = widget.sectores.firstWhere(
+                  (s) => s.id == tablasDat.idSector,
+                  orElse: () => Sector(id: 0, sector: 'N/A'),
+                );
+
+                bool isSelected = widget.selectedRow?.id == tablasDat.id;
+
+                return DataRow(
+                  color: isSelected
+                      ? MaterialStateProperty.all(
+                      Theme.of(context).colorScheme.primary.withOpacity(0.2))
+                      : MaterialStateProperty.all(Colors.transparent),
+                  selected: isSelected,
+                  onSelectChanged: (selected) {
+                    // Maneja la selección visual
+                    widget.onRowSelected?.call(tablasDat);
+
+                    // Si la fila fue seleccionada (no deseleccionada), ejecuta la acción de toque
+                    if (selected == true) {
+                      widget.onRowTapped?.call(tablasDat);
+                    }
+                  },
+                  cells: [
+                    DataCell(
+                      Text(tablasDat.nombre),
+                    ),
+                    DataCell(Text(tablasDat.archivo)),
+                    DataCell(Text(tablasDat.error)),
+                    DataCell(Text(tablasDat.observacion)),
+                    DataCell(Text(sector.sector)),
+                  ],
+                );
+              }).toList(),
+            ),
+          ),
         ),
       ),
     );
