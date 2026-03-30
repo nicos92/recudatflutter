@@ -7,7 +7,7 @@ import '../../data/services/sector_service.dart';
 class TablasDatFormPage extends StatefulWidget {
   final TablasDat? tablasDat;
 
-  const TablasDatFormPage({Key? key, this.tablasDat}) : super(key: key);
+  const TablasDatFormPage({super.key, this.tablasDat});
 
   @override
   _TablasDatFormPageState createState() => _TablasDatFormPageState();
@@ -16,14 +16,14 @@ class TablasDatFormPage extends StatefulWidget {
 class _TablasDatFormPageState extends State<TablasDatFormPage> {
   final TablasDatService _tablasDatService = TablasDatService();
   final SectorService _sectorService = SectorService();
-  
+
   final _formKey = GlobalKey<FormState>();
   final _nombreController = TextEditingController();
   final _archivoController = TextEditingController();
   final _errorController = TextEditingController();
   final _imgErrorController = TextEditingController();
   final _observacionController = TextEditingController();
-  
+
   int? _selectedSectorId;
   List<Sector> _sectores = [];
   bool _isLoading = true;
@@ -46,14 +46,18 @@ class _TablasDatFormPageState extends State<TablasDatFormPage> {
         _observacionController.text = widget.tablasDat!.observacion;
 
         // Check if the referenced sector exists in the list of available sectors
-        if (_sectores.any((sector) => sector.id == widget.tablasDat!.idSector)) {
+        if (_sectores.any(
+          (sector) => sector.id == widget.tablasDat!.idSector,
+        )) {
           _selectedSectorId = widget.tablasDat!.idSector;
         } else {
           // If the referenced sector doesn't exist, show a warning and set to null
           if (mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text('El sector referenciado ya no existe. Por favor seleccione uno nuevo.'),
+                content: Text(
+                  'El sector referenciado ya no existe. Por favor seleccione uno nuevo.',
+                ),
                 backgroundColor: Colors.orange,
               ),
             );
@@ -115,7 +119,7 @@ class _TablasDatFormPageState extends State<TablasDatFormPage> {
             ),
           );
         }
-        
+
         if (mounted) {
           Navigator.pop(context, true);
         }
@@ -133,7 +137,9 @@ class _TablasDatFormPageState extends State<TablasDatFormPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.tablasDat != null ? 'Editar Tabla DAT' : 'Nueva Tabla DAT'),
+        title: Text(
+          widget.tablasDat != null ? 'Editar Tabla DAT' : 'Nueva Tabla DAT',
+        ),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
       body: _isLoading
@@ -210,7 +216,7 @@ class _TablasDatFormPageState extends State<TablasDatFormPage> {
                     ),
                     const SizedBox(height: 16),
                     DropdownButtonFormField<int>(
-                      value: _selectedSectorId,
+                      initialValue: _selectedSectorId,
                       decoration: const InputDecoration(
                         labelText: 'Sector',
                         border: OutlineInputBorder(),
@@ -238,7 +244,9 @@ class _TablasDatFormPageState extends State<TablasDatFormPage> {
                       children: [
                         ElevatedButton(
                           onPressed: _saveTablasDat,
-                          child: Text(widget.tablasDat != null ? 'Actualizar' : 'Guardar'),
+                          child: Text(
+                            widget.tablasDat != null ? 'Actualizar' : 'Guardar',
+                          ),
                         ),
                         const SizedBox(width: 12),
                         TextButton(

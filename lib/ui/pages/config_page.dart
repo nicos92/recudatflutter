@@ -4,7 +4,7 @@ import '../../data/services/config_service.dart';
 import '../../data/services/theme_service.dart';
 
 class ConfigPage extends StatefulWidget {
-  const ConfigPage({Key? key}) : super(key: key);
+  const ConfigPage({super.key});
 
   @override
   _ConfigPageState createState() => _ConfigPageState();
@@ -13,10 +13,10 @@ class ConfigPage extends StatefulWidget {
 class _ConfigPageState extends State<ConfigPage> {
   final ConfigService _configService = ConfigService();
   final TextEditingController _pathController = TextEditingController();
-  
+
   int _selectedThemeMode = 0;
   bool _notificationsEnabled = true;
-  
+
   bool _isLoading = true;
 
   @override
@@ -30,7 +30,8 @@ class _ConfigPageState extends State<ConfigPage> {
       String basePath = await _configService.getBasePath();
       // Get theme mode from the theme service
       int themeMode = await _configService.getThemeMode();
-      bool notificationsEnabled = await _configService.areNotificationsEnabled();
+      bool notificationsEnabled = await _configService
+          .areNotificationsEnabled();
 
       setState(() {
         _pathController.text = basePath;
@@ -78,10 +79,7 @@ class _ConfigPageState extends State<ConfigPage> {
         title: const Text('Configuración'),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         actions: [
-          IconButton(
-            icon: const Icon(Icons.save),
-            onPressed: _saveConfig,
-          ),
+          IconButton(icon: const Icon(Icons.save), onPressed: _saveConfig),
         ],
       ),
       body: _isLoading
@@ -94,7 +92,10 @@ class _ConfigPageState extends State<ConfigPage> {
                   children: [
                     const Text(
                       'Configuración de la Aplicación',
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     const SizedBox(height: 24),
 
@@ -107,7 +108,10 @@ class _ConfigPageState extends State<ConfigPage> {
                           children: [
                             const Text(
                               'Ruta de Ejecución',
-                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                             const SizedBox(height: 16),
                             TextField(
@@ -122,7 +126,10 @@ class _ConfigPageState extends State<ConfigPage> {
                             const SizedBox(height: 8),
                             const Text(
                               'Esta ruta se usará para ejecutar el comando recover1 con los archivos DAT.',
-                              style: TextStyle(fontSize: 12, color: Colors.grey),
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.grey,
+                              ),
                             ),
                           ],
                         ),
@@ -140,11 +147,14 @@ class _ConfigPageState extends State<ConfigPage> {
                           children: [
                             const Text(
                               'Tema de la Aplicación',
-                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                             const SizedBox(height: 16),
                             DropdownButtonFormField<int>(
-                              value: _selectedThemeMode,
+                              initialValue: _selectedThemeMode,
                               decoration: const InputDecoration(
                                 border: OutlineInputBorder(),
                               ),
@@ -172,7 +182,10 @@ class _ConfigPageState extends State<ConfigPage> {
                             const SizedBox(height: 8),
                             const Text(
                               'Selecciona cómo deseas que se vea la aplicación.',
-                              style: TextStyle(fontSize: 12, color: Colors.grey),
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.grey,
+                              ),
                             ),
                           ],
                         ),
@@ -190,7 +203,10 @@ class _ConfigPageState extends State<ConfigPage> {
                           children: [
                             const Text(
                               'Notificaciones',
-                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                             const SizedBox(height: 16),
                             SwitchListTile(
@@ -204,7 +220,10 @@ class _ConfigPageState extends State<ConfigPage> {
                             ),
                             const Text(
                               'Activa o desactiva las notificaciones de la aplicación.',
-                              style: TextStyle(fontSize: 12, color: Colors.grey),
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.grey,
+                              ),
                             ),
                           ],
                         ),

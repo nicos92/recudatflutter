@@ -33,9 +33,11 @@ class CommandService {
       List<String> arguments = [fullPath, 'zz'];
 
       // Usar runExecutableArguments para ejecutar el comando
-      var result = await runExecutableArguments(command, arguments,
+      var result = await runExecutableArguments(
+        command,
+        arguments,
         workingDirectory: _basePath!,
-        runInShell: true
+        runInShell: true,
       );
 
       return CommandResult(
@@ -53,7 +55,7 @@ class CommandService {
       );
     }
   }
-  
+
   // Copiar archivo con formato de fecha y hora
   Future<CommandResult> copyFileWithTimestamp(String fileName) async {
     try {
@@ -61,10 +63,10 @@ class CommandService {
       if (_basePath == null) {
         await initialize();
       }
-      
+
       // Construir la ruta completa del archivo original
       String sourcePath = '$_basePath\\$fileName';
-      
+
       // Verificar si el archivo existe
       File sourceFile = File(sourcePath);
       if (!await sourceFile.exists()) {
@@ -73,28 +75,32 @@ class CommandService {
 
       // Generar timestamp en formato YYYYMMDDHHMMSS
       DateTime now = DateTime.now();
-      String timestamp = '${now.year}'
+      String timestamp =
+          '${now.year}'
           '${now.month.toString().padLeft(2, '0')}'
           '${now.day.toString().padLeft(2, '0')}'
           '${now.hour.toString().padLeft(2, '0')}'
           '${now.minute.toString().padLeft(2, '0')}'
           '${now.second.toString().padLeft(2, '0')}';
-      
+
       // Obtener la extensión del archivo original
       String extension = '';
       int lastDotIndex = fileName.lastIndexOf('.');
       if (lastDotIndex != -1) {
         extension = fileName.substring(lastDotIndex);
       }
-      
+
       // Crear el nombre del archivo destino
-      String baseFileName = fileName.substring(0, lastDotIndex != -1 ? lastDotIndex : fileName.length);
-      String destinationFileName = '${baseFileName}_${timestamp}${extension}';
+      String baseFileName = fileName.substring(
+        0,
+        lastDotIndex != -1 ? lastDotIndex : fileName.length,
+      );
+      String destinationFileName = '${baseFileName}_$timestamp$extension';
       String destinationPath = '$_basePath\\$destinationFileName';
-      
+
       // Copiar el archivo
       await sourceFile.copy(destinationPath);
-      
+
       return CommandResult(
         success: true,
         output: 'Archivo copiado exitosamente a: $destinationFileName',

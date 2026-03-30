@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io' show Platform, Directory;
 import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
 
 // Importar sqflite_ffi para Windows
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
@@ -54,11 +53,7 @@ class DatabaseHelper {
     }
 
     String path = join(appDir.path, 'tablas_dat.db');
-    return await openDatabase(
-      path,
-      version: 1,
-      onCreate: _onCreate,
-    );
+    return await openDatabase(path, version: 1, onCreate: _onCreate);
   }
 
   Future<void> _onCreate(Database db, int version) async {
@@ -106,7 +101,7 @@ class DatabaseHelper {
       'Archivos de Sistema',
       'Faena Porcina',
       'Ciclo 3',
-      'Cámara Remate'
+      'Cámara Remate',
     ];
 
     for (String sector in sectores) {
@@ -122,7 +117,10 @@ class DatabaseHelper {
 
   Future<List<Sector>> getSectores() async {
     final db = await database;
-    final List<Map<String, dynamic>> maps = await db.query('sectores', orderBy: 'sector');
+    final List<Map<String, dynamic>> maps = await db.query(
+      'sectores',
+      orderBy: 'sector',
+    );
 
     return List.generate(maps.length, (i) {
       return Sector.fromMap(maps[i]);
@@ -156,11 +154,7 @@ class DatabaseHelper {
 
   Future<int> deleteSector(int id) async {
     final db = await database;
-    return await db.delete(
-      'sectores',
-      where: 'id = ?',
-      whereArgs: [id],
-    );
+    return await db.delete('sectores', where: 'id = ?', whereArgs: [id]);
   }
 
   // Métodos CRUD para TablasDat
@@ -184,8 +178,14 @@ class DatabaseHelper {
       if (whereClause.isNotEmpty) {
         whereClause += ' AND ';
       }
-      whereClause += '(nombre LIKE ? OR archivo LIKE ? OR error LIKE ? OR observacion LIKE ?)';
-      whereArgs.addAll(['%$keyword%', '%$keyword%', '%$keyword%', '%$keyword%']);
+      whereClause +=
+          '(nombre LIKE ? OR archivo LIKE ? OR error LIKE ? OR observacion LIKE ?)';
+      whereArgs.addAll([
+        '%$keyword%',
+        '%$keyword%',
+        '%$keyword%',
+        '%$keyword%',
+      ]);
     }
 
     final List<Map<String, dynamic>> maps = await db.query(
@@ -227,10 +227,6 @@ class DatabaseHelper {
 
   Future<int> deleteTablasDat(int id) async {
     final db = await database;
-    return await db.delete(
-      'tablas_dat',
-      where: 'id = ?',
-      whereArgs: [id],
-    );
+    return await db.delete('tablas_dat', where: 'id = ?', whereArgs: [id]);
   }
 }

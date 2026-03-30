@@ -7,7 +7,7 @@ import 'tablas_dat_form_page.dart';
 import '../widgets/dat_table.dart';
 
 class TablasDatListPage extends StatefulWidget {
-  const TablasDatListPage({Key? key}) : super(key: key);
+  const TablasDatListPage({super.key});
 
   @override
   _TablasDatListPageState createState() => _TablasDatListPageState();
@@ -74,7 +74,9 @@ class _TablasDatListPageState extends State<TablasDatListPage> {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Confirmar Eliminación'),
-        content: Text('¿Está seguro que desea eliminar la tabla DAT "$nombre"?'),
+        content: Text(
+          '¿Está seguro que desea eliminar la tabla DAT "$nombre"?',
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
@@ -117,7 +119,7 @@ class _TablasDatListPageState extends State<TablasDatListPage> {
                             builder: (context) => const TablasDatFormPage(),
                           ),
                         );
-                        
+
                         if (result == true) {
                           await _loadData();
                         }
@@ -127,7 +129,7 @@ class _TablasDatListPageState extends State<TablasDatListPage> {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  
+
                   // Tabla de datos
                   Expanded(
                     child: _tablasDat.isEmpty
@@ -140,7 +142,8 @@ class _TablasDatListPageState extends State<TablasDatListPage> {
                         : DatTable(
                             data: _tablasDat,
                             sectores: _sectores,
-                            selectedRow: _selectedForDeletion, // Highlight the selected row for deletion
+                            selectedRow:
+                                _selectedForDeletion, // Highlight the selected row for deletion
                             onRowSelected: (tablasDat) {
                               // Handle row selection for deletion
                               setState(() {
@@ -149,9 +152,9 @@ class _TablasDatListPageState extends State<TablasDatListPage> {
                             },
                           ),
                   ),
-                  
+
                   const SizedBox(height: 16),
-                  
+
                   // Botones para editar y eliminar seleccionado
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -162,8 +165,9 @@ class _TablasDatListPageState extends State<TablasDatListPage> {
                                 bool? result = await Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) =>
-                                      TablasDatFormPage(tablasDat: _selectedForDeletion),
+                                    builder: (context) => TablasDatFormPage(
+                                      tablasDat: _selectedForDeletion,
+                                    ),
                                   ),
                                 );
 
@@ -175,7 +179,8 @@ class _TablasDatListPageState extends State<TablasDatListPage> {
                         icon: const Icon(Icons.edit),
                         label: const Text('Editar Seleccionado'),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.yellow.shade600, // Yellow color
+                          backgroundColor:
+                              Colors.yellow.shade600, // Yellow color
                           foregroundColor: Colors.black, // Text/icon color
                         ),
                       ),
@@ -183,13 +188,17 @@ class _TablasDatListPageState extends State<TablasDatListPage> {
                       ElevatedButton.icon(
                         onPressed: _selectedForDeletion != null
                             ? () {
-                                _confirmDelete(_selectedForDeletion!.id!, _selectedForDeletion!.nombre);
+                                _confirmDelete(
+                                  _selectedForDeletion!.id!,
+                                  _selectedForDeletion!.nombre,
+                                );
                               }
                             : null,
                         icon: const Icon(Icons.delete),
                         label: const Text('Eliminar Seleccionado'),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.redAccent.shade400, // Yellow color
+                          backgroundColor:
+                              Colors.redAccent.shade400, // Yellow color
                           foregroundColor: Colors.black, // Text/icon color
                         ),
                       ),

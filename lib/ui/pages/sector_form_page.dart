@@ -5,7 +5,7 @@ import '../../data/services/sector_service.dart';
 class SectorFormPage extends StatefulWidget {
   final Sector? sector;
 
-  const SectorFormPage({Key? key, this.sector}) : super(key: key);
+  const SectorFormPage({super.key, this.sector});
 
   @override
   _SectorFormPageState createState() => _SectorFormPageState();
@@ -36,10 +36,7 @@ class _SectorFormPageState extends State<SectorFormPage> {
         if (widget.sector != null) {
           // Actualizar sector existente
           await _sectorService.updateSector(
-            Sector(
-              id: widget.sector!.id,
-              sector: _sectorController.text,
-            ),
+            Sector(id: widget.sector!.id, sector: _sectorController.text),
           );
         } else {
           // Crear nuevo sector
@@ -47,7 +44,7 @@ class _SectorFormPageState extends State<SectorFormPage> {
             Sector(sector: _sectorController.text),
           );
         }
-        
+
         if (mounted) {
           Navigator.pop(context, true);
         }
@@ -93,7 +90,9 @@ class _SectorFormPageState extends State<SectorFormPage> {
                 children: [
                   ElevatedButton(
                     onPressed: _saveSector,
-                    child: Text(widget.sector != null ? 'Actualizar' : 'Guardar'),
+                    child: Text(
+                      widget.sector != null ? 'Actualizar' : 'Guardar',
+                    ),
                   ),
                   const SizedBox(width: 12),
                   TextButton(

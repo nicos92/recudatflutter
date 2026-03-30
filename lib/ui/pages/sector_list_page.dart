@@ -4,7 +4,7 @@ import '../../data/services/sector_service.dart';
 import 'sector_form_page.dart';
 
 class SectorListPage extends StatefulWidget {
-  const SectorListPage({Key? key}) : super(key: key);
+  const SectorListPage({super.key});
 
   @override
   _SectorListPageState createState() => _SectorListPageState();
@@ -66,7 +66,9 @@ class _SectorListPageState extends State<SectorListPage> {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Confirmar Eliminación'),
-        content: Text('¿Está seguro que desea eliminar el sector "$sectorName"?'),
+        content: Text(
+          '¿Está seguro que desea eliminar el sector "$sectorName"?',
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
@@ -109,7 +111,7 @@ class _SectorListPageState extends State<SectorListPage> {
                             builder: (context) => const SectorFormPage(),
                           ),
                         );
-                        
+
                         if (result == true) {
                           await _loadSectores();
                         }
@@ -119,7 +121,7 @@ class _SectorListPageState extends State<SectorListPage> {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  
+
                   // Lista de sectores
                   Expanded(
                     child: _sectores.isEmpty
@@ -140,24 +142,35 @@ class _SectorListPageState extends State<SectorListPage> {
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       IconButton(
-                                        icon: const Icon(Icons.edit, color: Colors.blue),
+                                        icon: const Icon(
+                                          Icons.edit,
+                                          color: Colors.blue,
+                                        ),
                                         onPressed: () async {
                                           bool? result = await Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => 
-                                                SectorFormPage(sector: sector),
+                                              builder: (context) =>
+                                                  SectorFormPage(
+                                                    sector: sector,
+                                                  ),
                                             ),
                                           );
-                                          
+
                                           if (result == true) {
                                             await _loadSectores();
                                           }
                                         },
                                       ),
                                       IconButton(
-                                        icon: const Icon(Icons.delete, color: Colors.red),
-                                        onPressed: () => _confirmDelete(sector.id!, sector.sector),
+                                        icon: const Icon(
+                                          Icons.delete,
+                                          color: Colors.red,
+                                        ),
+                                        onPressed: () => _confirmDelete(
+                                          sector.id!,
+                                          sector.sector,
+                                        ),
                                       ),
                                     ],
                                   ),

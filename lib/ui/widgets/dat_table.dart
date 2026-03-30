@@ -6,17 +6,18 @@ class DatTable extends StatefulWidget {
   final List<TablasDat> data;
   final List<Sector> sectores;
   final Function(TablasDat)? onRowSelected;
-  final Function(TablasDat)? onRowTapped;  // Cambiado a onRowTapped para manejar el toque simple
+  final Function(TablasDat)?
+  onRowTapped; // Cambiado a onRowTapped para manejar el toque simple
   final TablasDat? selectedRow;
 
   const DatTable({
-    Key? key,
+    super.key,
     required this.data,
     required this.sectores,
     this.onRowSelected,
     this.onRowTapped,
     this.selectedRow,
-  }) : super(key: key);
+  });
 
   @override
   _DatTableState createState() => _DatTableState();
@@ -46,17 +47,21 @@ class _DatTableState extends State<DatTable> {
             primary: Theme.of(context).colorScheme.primary,
           ),
         ),
-        child: Scrollbar(  // Add scrollbar for better UX
-          controller: _scrollController,  // Connect the scrollbar to the scroll controller
-          child: SingleChildScrollView(  // Make the table scrollable
-            controller: _scrollController,  // Connect the scroll view to the scroll controller
-            scrollDirection: Axis.vertical,  // Allow vertical scrolling
+        child: Scrollbar(
+          // Add scrollbar for better UX
+          controller:
+              _scrollController, // Connect the scrollbar to the scroll controller
+          child: SingleChildScrollView(
+            // Make the table scrollable
+            controller:
+                _scrollController, // Connect the scroll view to the scroll controller
+            scrollDirection: Axis.vertical, // Allow vertical scrolling
             child: DataTable(
               columnSpacing: 16,
               horizontalMargin: 12,
               headingRowHeight: 48,
               dataRowHeight: 40,
-              headingRowColor: MaterialStateProperty.all<Color>(
+              headingRowColor: WidgetStateProperty.all<Color>(
                 Theme.of(context).colorScheme.primaryContainer,
               ),
               columns: const [
@@ -101,9 +106,12 @@ class _DatTableState extends State<DatTable> {
 
                 return DataRow(
                   color: isSelected
-                      ? MaterialStateProperty.all(
-                      Theme.of(context).colorScheme.primary.withOpacity(0.2))
-                      : MaterialStateProperty.all(Colors.transparent),
+                      ? WidgetStateProperty.all(
+                          Theme.of(
+                            context,
+                          ).colorScheme.primary.withOpacity(0.2),
+                        )
+                      : WidgetStateProperty.all(Colors.transparent),
                   selected: isSelected,
                   onSelectChanged: (selected) {
                     // Maneja la selección visual
@@ -115,9 +123,7 @@ class _DatTableState extends State<DatTable> {
                     }
                   },
                   cells: [
-                    DataCell(
-                      Text(tablasDat.nombre),
-                    ),
+                    DataCell(Text(tablasDat.nombre)),
                     DataCell(Text(tablasDat.archivo)),
                     DataCell(Text(tablasDat.error)),
                     DataCell(Text(tablasDat.observacion)),
