@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:process_run/process_run.dart';
 import 'config_service.dart';
+import 'package:path/path.dart' as p;
 
 class CommandService {
   final ConfigService _configService = ConfigService();
@@ -20,7 +21,8 @@ class CommandService {
       }
 
       // Construir la ruta completa del archivo
-      String fullPath = '$_basePath\\$fileName';
+      // String fullPath = '$_basePath/$fileName';
+      String fullPath = p.join(_basePath!, fileName);
 
       // Verificar si el archivo existe
       File file = File(fullPath);
@@ -65,7 +67,8 @@ class CommandService {
       }
 
       // Construir la ruta completa del archivo original
-      String sourcePath = '$_basePath\\$fileName';
+      // String sourcePath = '$_basePath\\$fileName';
+      String sourcePath = p.join(_basePath!, fileName);
 
       // Verificar si el archivo existe
       File sourceFile = File(sourcePath);
@@ -96,7 +99,7 @@ class CommandService {
         lastDotIndex != -1 ? lastDotIndex : fileName.length,
       );
       String destinationFileName = '${baseFileName}_$timestamp$extension';
-      String destinationPath = '$_basePath\\$destinationFileName';
+      String destinationPath = p.join(_basePath!, destinationFileName);
 
       // Copiar el archivo
       await sourceFile.copy(destinationPath);
